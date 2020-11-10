@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Vue.js App</title>
+  <link href="main.css" rel="stylesheet">
+</head>
+<body>
+​
+​
+  <div id="app">
+    <h1>Bitcoin Price Index</h1>
+    <div v-for="currency in info" class="currency">
+      {{ currency.description }}:
+      <span class="lighten">
+        <span v-html="currency.symbol"></span>
+        {{ currency.rate_float | currencydecimal }}
+      </span>
+    </div>
+  </div>
+​
+​
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
+​
+  <script>
+​
+  new Vue({
+    el: '#app',
+    data () {
+      return {
+        info: null
+      }
+    },
+    mounted () {
+      axios
+        .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+        .then(response => (this.info = response.data.bpi))
+    }
+  })
+  </script>
+​
+</body>
+</html>
